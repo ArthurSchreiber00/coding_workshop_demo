@@ -65,4 +65,4 @@ Lesende Endpunkte sind offen, schreibende verlangen den Header `X-Api-Key` (Wert
 
 läuft auf `http://127.0.0.1:8001/mcp` und ist in `.vscode/mcp.json` als Server `toolshed` eingetragen. Voraussetzung: die App läuft auf Port 8000. Test ohne VS Code: `.venv\Scripts\python.exe mcp_server\smoke_test.py`.
 
-Weiteres: [docs/architecture.md](docs/architecture.md), [docs/conventions.md](docs/conventions.md), [CONTRIBUTING.md](CONTRIBUTING.md).
+Weiteres: [docs/architecture.md](docs/architecture.md), [docs/conventions.md](docs/conventions.md)

@@ -15,5 +15,5 @@ toolshed.db-journal
 .idea/
 .DS_Store
 
-# Facilitator material lives in a separate private repo
 solutions/
+exercises/

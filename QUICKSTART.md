@@ -2,8 +2,6 @@
 
 Alle Befehle werden in **PowerShell** eingegeben (Startmenü → „PowerShell“, oder in VS Code: Terminal → Neues Terminal). Nach jedem Schritt steht, woran du erkennst, dass er geklappt hat.
 
-Es werden keine Skripte ausgeführt und keine Systemeinstellungen geändert. Das virtuelle Environment wird bewusst nicht „aktiviert“, sondern immer direkt über `.venv\Scripts\python.exe` angesprochen.
-
 ## 1. Voraussetzungen prüfen
 
 ```powershell
