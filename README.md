@@ -1,8 +1,7 @@
 # Toolshed
 
-Kleine Web-App zur Geräteausleihe im Team – das Übungsprojekt für den Workshop **„AI-assisted Coding mit GitHub Copilot“**.
+Kleine Web-App zur Geräteausleihe im Team – das Übungsprojekt für den Workshop **KI-Coding**.
 
-Geräte (Laptops, Beamer, Kameras …) werden an Personen ausgeliehen und zurückgegeben. Es gibt eine HTML-Oberfläche, eine JSON-API und einen MCP-Server.
 
 Die Codebasis ist absichtlich nicht perfekt. Was du findest, gehört vermutlich zum Workshop.
 

@@ -1,8 +1,20 @@
+import re
+
+
 def test_dashboard_renders(client):
     resp = client.get("/")
     assert resp.status_code == 200
     assert "Übersicht" in resp.text
     assert "Toolshed" in resp.text
+
+
+def test_dashboard_cards_show_numbers(client):
+    html = client.get("/").text
+    for label in ("Geräte", "verfügbar", "ausgeliehen", "Personen"):
+        match = re.search(r'<div class="card-value">([^<]*)</div><div class="card-label">' + label + "</div>", html)
+        assert match, f"Karte {label} fehlt"
+        assert match.group(1).strip().isdigit(), f"Karte {label} zeigt keine Zahl: {match.group(1)!r}"
+    assert "built-in method" not in html
 
 
 def test_items_page_with_search(client):

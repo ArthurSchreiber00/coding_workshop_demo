@@ -50,7 +50,7 @@ Erwartet: letzte Zeile beginnt mit `Successfully installed` (beim zweiten Mal `R
 .venv\Scripts\python.exe -m pytest
 ```
 
-Erwartet: `23 passed`.
+Erwartet: `24 passed`.
 
 ## 6. App starten
 
