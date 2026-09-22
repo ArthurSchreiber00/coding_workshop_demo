@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ app_name }}{% endblock %}</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <img src="/static/logo.svg" width="28" height="28">
+      <span>{{ app_name }}</span>
+    </a>
+    <nav>
+      <a href="/">Übersicht</a>
+      <a href="/items">Geräte</a>
+      <a href="/loans">Ausleihen <span class="badge badge-count">{{ open_count }}</span></a>
+      <a href="/members">Personen</a>
+      <a href="/docs" target="_blank">API</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% if show_debug %}
+  <footer class="debug">
+    DB: {{ db_path }} · heute: {{ today }}
+  </footer>
+  {% endif %}
+  <script src="/static/app.js"></script>
+</body>
+</html>

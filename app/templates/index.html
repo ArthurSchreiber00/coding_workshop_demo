@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Übersicht – {{ app_name }}{% endblock %}
+{% block content %}
+<h1>Übersicht</h1>
+
+<div class="cards">
+  <div class="card"><div class="card-value">{{ stats.items }}</div><div class="card-label">Geräte</div></div>
+  <div class="card"><div class="card-value">{{ stats.available }}</div><div class="card-label">verfügbar</div></div>
+  <div class="card"><div class="card-value">{{ stats.on_loan }}</div><div class="card-label">ausgeliehen</div></div>
+  <div class="card"><div class="card-value">{{ stats.members }}</div><div class="card-label">Personen</div></div>
+</div>
+
+<h2>Letzte Ausleihen</h2>
+<table class="table">
+  <tr>
+    <td>Gerät</td><td>Person</td><td>Ausgeliehen</td><td>Fällig</td><td>Status</td>
+  </tr>
+  {% for l in recent %}
+  <tr>
+    <td>{{ l.item_name }}</td>
+    <td>{{ l.member_name }}</td>
+    <td>{{ l.loaned_at }}</td>
+    <td>{{ l.due_date }}</td>
+    <td>
+      {% if l.returned_at %}<span class="badge badge-ok">zurück</span>
+      {% elif l.due_date < today %}<span class="badge badge-warn">überfällig</span>
+      {% else %}<span class="badge badge-open">offen</span>{% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

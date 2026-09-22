@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Neues Gerät – {{ app_name }}{% endblock %}
+{% block content %}
+<h1>Neues Gerät</h1>
+
+{% if error %}<div class="alert">{{ error }}</div>{% endif %}
+
+<form class="form" method="post" action="/items/new">
+  <div class="field">
+    <label for="name">Name <span class="req">*</span></label>
+    <input id="name" name="name" type="text" required value="{{ form.name or '' }}">
+  </div>
+  <div class="field">
+    <label for="category">Kategorie <span class="req">*</span></label>
+    <input id="category" name="category" type="text" required value="{{ form.category or '' }}" list="categories">
+    <datalist id="categories">
+      <option>Laptop</option><option>Beamer</option><option>Kamera</option><option>Audio</option>
+      <option>Tablet</option><option>Smartphone</option><option>Zubehör</option>
+    </datalist>
+  </div>
+  <div class="field">
+    <label for="inventory_no">Inventarnummer <span class="req">*</span></label>
+    <input id="inventory_no" name="inventory_no" type="text" required placeholder="INV-0011" value="{{ form.inventory_no or '' }}">
+  </div>
+  <div class="field">
+    <input name="notes" type="text" placeholder="Notizen (optional)" value="{{ form.notes or '' }}">
+  </div>
+  <div class="actions">
+    <button type="submit" class="btn">Speichern</button>
+    <a href="/items" class="link-muted">Abbrechen</a>
+  </div>
+</form>
+{% endblock %}

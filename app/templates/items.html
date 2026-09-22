@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Geräte – {{ app_name }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Geräte</h1>
+  <a class="btn" href="/items/new">+ Neues Gerät</a>
+</div>
+
+<form class="search" method="get" action="/items">
+  <input type="text" name="q" value="{{ q }}" placeholder="Suchen…">
+  <button type="submit">🔍</button>
+  {% if q %}<a href="/items" class="link-muted">zurücksetzen</a>{% endif %}
+</form>
+
+<div class="filter" id="status-filter">
+  <div class="filter-label">Status:</div>
+  <div class="dropdown">
+    <div class="dropdown-toggle" onclick="toggleDropdown('status-menu')">Alle ▾</div>
+    <div class="dropdown-menu" id="status-menu">
+      <div class="dropdown-item" onclick="filterStatus('')">Alle</div>
+      <div class="dropdown-item" onclick="filterStatus('available')">verfügbar</div>
+      <div class="dropdown-item" onclick="filterStatus('on_loan')">ausgeliehen</div>
+      <div class="dropdown-item" onclick="filterStatus('maintenance')">Wartung</div>
+    </div>
+  </div>
+</div>
+
+<table class="table" id="items-table">
+  <tr>
+    <td>Inventar-Nr.</td><td>Name</td><td>Kategorie</td><td>Status</td><td>Notizen</td>
+  </tr>
+  {% for it in items %}
+  <tr data-status="{{ it.status }}">
+    <td><code>{{ it.inventory_no }}</code></td>
+    <td>{{ it.name }}</td>
+    <td>{{ it.category }}</td>
+    <td>
+      {% if it.status == 'available' %}<span class="badge badge-ok">verfügbar</span>
+      {% elif it.status == 'on_loan' %}<span class="badge badge-open">ausgeliehen</span>
+      {% else %}<span class="badge badge-warn">Wartung</span>{% endif %}
+    </td>
+    <td class="muted">{{ it.notes or '' }}</td>
+  </tr>
+  {% else %}
+  <tr><td colspan="5" class="muted">Keine Geräte gefunden.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

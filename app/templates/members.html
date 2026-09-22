@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Personen – {{ app_name }}{% endblock %}
+{% block content %}
+<h1>Personen</h1>
+<table class="table">
+  <tr>
+    <td>Name</td><td>Team</td><td>E-Mail</td><td>Offene Ausleihen</td><td>Rolle</td>
+  </tr>
+  {% for m in members %}
+  <tr>
+    <td>{{ m.name }}</td>
+    <td>{{ m.team }}</td>
+    <td><a href="mailto:{{ m.email }}">{{ m.email }}</a></td>
+    <td>{{ m.open_loans }}</td>
+    <td>{% if m.is_admin %}<span class="badge badge-admin">Admin</span>{% endif %}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

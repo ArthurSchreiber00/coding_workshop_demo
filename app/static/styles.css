@@ -1,0 +1,83 @@
+:root {
+  --green: #2f6f4e;
+  --green-dark: #24563c;
+  --gray-100: #f5f6f7;
+  --gray-300: #d9dcdf;
+  --gray-500: #8a9199;
+  --gray-800: #2b2f33;
+}
+
+* { box-sizing: border-box; }
+*:focus { outline: none; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--gray-800);
+  background: #fff;
+}
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.6rem 1.5rem; background: var(--green); color: #fff;
+}
+.brand { display: flex; align-items: center; gap: 0.5rem; color: #fff; text-decoration: none; font-weight: 600; }
+.topbar nav a { color: #fff; text-decoration: none; margin-left: 1.2rem; }
+.topbar nav a:hover { text-decoration: underline; }
+
+.container { max-width: 1000px; margin: 0 auto; padding: 1.5rem; }
+.page-head { display: flex; align-items: center; justify-content: space-between; }
+
+h1 { font-size: 1.6rem; margin: 0 0 1rem; }
+h2 { font-size: 1.15rem; margin: 1.5rem 0 0.6rem; }
+
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.card { background: var(--gray-100); border-radius: 8px; padding: 1rem; text-align: center; }
+.card-value { font-size: 2rem; font-weight: 700; color: var(--green); }
+.card-label { color: var(--gray-500); font-size: 0.9rem; }
+
+.table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+.table tr:first-child td { font-weight: 600; background: var(--gray-100); }
+.table td { padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--gray-300); vertical-align: top; }
+.muted, .link-muted { color: var(--gray-500); }
+.link-muted { margin-left: 0.75rem; font-size: 0.9rem; }
+
+.badge { display: inline-block; padding: 0.1rem 0.55rem; border-radius: 999px; font-size: 0.8rem; }
+.badge-count { background: #fff; color: var(--green); font-weight: 700; }
+.badge-ok   { background: #e3f3ea; color: #7fbf9a; }
+.badge-open { background: #e8eef7; color: #9fb3d1; }
+.badge-warn { background: #fdecec; color: #f0a0a0; }
+.badge-admin { background: var(--gray-100); color: var(--gray-500); }
+
+.btn {
+  display: inline-block; background: var(--green); color: #fff; border: none;
+  padding: 0.5rem 0.9rem; border-radius: 6px; text-decoration: none; cursor: pointer; font-size: 0.95rem;
+}
+.btn:hover { background: var(--green-dark); }
+.btn-icon { background: none; border: 1px solid var(--gray-300); border-radius: 6px; padding: 0.2rem 0.5rem; cursor: pointer; }
+
+.search { display: flex; gap: 0.5rem; align-items: center; margin: 1rem 0; }
+.search input { padding: 0.45rem 0.6rem; border: 1px solid var(--gray-300); border-radius: 6px; min-width: 260px; }
+.search button { padding: 0.4rem 0.7rem; border: 1px solid var(--gray-300); background: #fff; border-radius: 6px; cursor: pointer; }
+
+.filter { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
+.filter-label { color: var(--gray-500); font-size: 0.9rem; }
+.dropdown { position: relative; }
+.dropdown-toggle { border: 1px solid var(--gray-300); border-radius: 6px; padding: 0.3rem 0.7rem; cursor: pointer; background: #fff; }
+.dropdown-menu { display: none; position: absolute; top: 110%; left: 0; background: #fff; border: 1px solid var(--gray-300); border-radius: 6px; min-width: 160px; z-index: 5; }
+.dropdown-menu.open { display: block; }
+.dropdown-item { padding: 0.4rem 0.7rem; cursor: pointer; }
+.dropdown-item:hover { background: var(--gray-100); }
+
+.form .field { margin-bottom: 0.9rem; display: flex; flex-direction: column; gap: 0.25rem; max-width: 420px; }
+.form label { font-size: 0.9rem; }
+.form input, .form select { padding: 0.45rem 0.6rem; border: 1px solid var(--gray-300); border-radius: 6px; font-size: 0.95rem; }
+.form-inline { display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap; }
+.form-inline .field { margin-bottom: 0; }
+.req { color: #e05555; }
+.actions { display: flex; align-items: center; gap: 0.5rem; }
+.alert { background: #fdecec; color: #8a2b2b; padding: 0.6rem 0.8rem; border-radius: 6px; margin-bottom: 1rem; }
+.panel { background: var(--gray-100); border-radius: 8px; padding: 1rem 1.2rem; margin-bottom: 1.2rem; }
+.inline { display: inline; }
+
+.debug { margin-top: 3rem; padding: 0.5rem 1.5rem; font-size: 0.75rem; color: var(--gray-500); border-top: 1px solid var(--gray-300); }

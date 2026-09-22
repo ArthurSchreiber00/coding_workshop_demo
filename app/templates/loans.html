@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Ausleihen – {{ app_name }}{% endblock %}
+{% block content %}
+<h1>Ausleihen</h1>
+
+<section class="panel">
+  <h2>Neue Ausleihe</h2>
+  {% if error %}<div class="alert">{{ error }}</div>{% endif %}
+  <form class="form form-inline" method="post" action="/loans/new">
+    <div class="field">
+      <label for="item_id">Gerät</label>
+      <select id="item_id" name="item_id" required>
+        {% for it in available_items %}
+        <option value="{{ it.id }}">{{ it.name }} ({{ it.inventory_no }})</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="field">
+      <label for="member_id">Person</label>
+      <select id="member_id" name="member_id" required>
+        {% for m in members %}
+        <option value="{{ m.id }}">{{ m.name }} – {{ m.team }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="field">
+      <label for="due_date">Rückgabe bis</label>
+      <input id="due_date" name="due_date" type="date" value="{{ default_due }}">
+    </div>
+    <button type="submit" class="btn">Ausleihen</button>
+  </form>
+</section>
+
+<table class="table">
+  <tr>
+    <td>#</td><td>Gerät</td><td>Person</td><td>Ausgeliehen</td><td>Fällig</td><td>Status</td><td></td>
+  </tr>
+  {% for l in loans %}
+  <tr>
+    <td>{{ l.id }}</td>
+    <td>{{ l.item_name }}</td>
+    <td>{{ l.member_name }}</td>
+    <td>{{ l.loaned_at }}</td>
+    <td>{{ l.due_date }}</td>
+    <td>
+      {% if l.returned_at %}<span class="badge badge-ok">zurück am {{ l.returned_at }}</span>
+      {% elif l.due_date < today %}<span class="badge badge-warn">überfällig</span>
+      {% else %}<span class="badge badge-open">offen</span>{% endif %}
+    </td>
+    <td>
+      {% if not l.returned_at %}
+      <form method="post" action="/loans/{{ l.id }}/return" class="inline">
+        <button type="submit" class="btn-icon" title="Zurückgeben">↩</button>
+      </form>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
