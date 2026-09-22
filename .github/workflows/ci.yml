@@ -22,3 +22,19 @@ jobs:
       - run: python -m pytest
       - name: MCP server imports
         run: python -c "import mcp_server.server"
+
+  quickstart-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run quickstart.ps1 (installs, tests, starts app, checks website, stops app)
+        shell: pwsh
+        run: .\quickstart.ps1 -NoBrowser -StopAfterCheck
+      - name: Run quickstart.cmd wrapper (check only, app is stopped -> expect exit 1)
+        shell: cmd
+        run: |
+          quickstart.cmd -CheckOnly
+          if %ERRORLEVEL% EQU 1 (echo wrapper works && exit /b 0) else (exit /b 1)

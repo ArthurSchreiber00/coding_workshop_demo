@@ -8,9 +8,17 @@ Die Codebasis ist absichtlich nicht perfekt. Was du findest, gehört vermutlich 
 
 ## Schnellstart (Windows, PowerShell)
 
+Ausführlich mit Prüfschritten und Hilfe bei Problemen: [QUICKSTART.md](QUICKSTART.md). Kurzfassung:
+
 ```powershell
 git clone <REPO-URL> toolshed
 cd toolshed
+.\quickstart.cmd
+```
+
+Oder von Hand:
+
+```powershell
 py -3 -m venv .venv
 .venv\Scripts\python.exe -m pip install -r requirements.txt
 .venv\Scripts\python.exe -m uvicorn app.main:app --reload

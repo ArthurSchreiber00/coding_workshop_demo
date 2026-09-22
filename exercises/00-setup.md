@@ -8,6 +8,7 @@
    cd toolshed
    code .
    ```
+   Schnellweg für Schritt 2–4: `.\quickstart.cmd` (Details in [QUICKSTART.md](../QUICKSTART.md)). Sonst:
 2. Environment und Abhängigkeiten:
    ```powershell
    py -3 -m venv .venv
