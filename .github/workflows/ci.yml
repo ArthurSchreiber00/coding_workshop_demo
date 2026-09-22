@@ -44,7 +44,7 @@ jobs:
             try { $status = (Invoke-WebRequest http://127.0.0.1:8000/api/items -UseBasicParsing).StatusCode; break } catch { Start-Sleep -Seconds 1 }
           }
           $count = 0
-          if ($status -eq 200) { $count = ((Invoke-WebRequest http://127.0.0.1:8000/api/items -UseBasicParsing).Content | ConvertFrom-Json | Measure-Object).Count }
+          if ($status -eq 200) { $count = ((Invoke-WebRequest http://127.0.0.1:8000/api/items -UseBasicParsing).Content | ConvertFrom-Json).Count }
           Stop-Process -Id $server.Id -Force
           if ($status -ne 200 -or $count -ne 10) { throw "Website-Check fehlgeschlagen: Status $status, $count Geräte" }
           "Website OK: Status $status, $count Geräte"

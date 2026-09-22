@@ -85,10 +85,10 @@ Invoke-WebRequest http://127.0.0.1:8000/api/items -UseBasicParsing | Select-Obje
 Erwartet: `StatusCode 200`.
 
 ```powershell
-(Invoke-WebRequest http://127.0.0.1:8000/api/items -UseBasicParsing).Content | ConvertFrom-Json | Measure-Object | Select-Object Count
+((Invoke-WebRequest http://127.0.0.1:8000/api/items -UseBasicParsing).Content | ConvertFrom-Json).Count
 ```
 
-Erwartet: `Count 10`.
+Erwartet: `10` (Anzahl Geräte in der API).
 
 ## 8. VS Code auf das Environment zeigen
 
@@ -105,8 +105,10 @@ Befehlspalette (`Strg+Shift+P`) → **Python: Select Interpreter** → `.venv\Sc
 |---|---|
 | `py` wird nicht erkannt | `python` statt `py -3` verwenden. Falls auch das fehlt: Python von https://www.python.org/downloads/ installieren, dabei „Add python.exe to PATH“ anhaken, PowerShell neu öffnen. |
 | `python` öffnet den Microsoft Store | Einstellungen → Apps → Erweiterte App-Einstellungen → App-Ausführungsaliase: `python.exe` und `python3.exe` ausschalten. Oder `py -3` verwenden. |
+| `pip install` zeigt `[notice] A new release of pip is available` | Kein Fehler, nur ein Hinweis. Ignorieren. |
 | `pip install` scheitert (Timeout, SSL, 407) | Firmenproxy: vorher `$env:HTTPS_PROXY = "http://proxy:port"` setzen und den Befehl wiederholen. Interner PyPI-Spiegel: `.venv\Scripts\python.exe -m pip config set global.index-url <URL>`. |
 | `Address already in use` / Port 8000 belegt | `--port 8080` an den Startbefehl anhängen und in den Übungen `8080` statt `8000` verwenden. |
+| `Invoke-WebRequest` meldet einen Proxy-Fehler | Firmenproxy leitet auch `127.0.0.1` um. Prüfung im Browser genügt. |
 | Seite lädt nicht | Läuft die App noch im ersten Fenster? Fehlermeldung dort lesen. Adresse genau `http://127.0.0.1:8000` (nicht https). |
 | Tests rot | Ausgabe lesen. Meist unvollständige Installation → Schritt 4 wiederholen. |
 | VS Code findet den Interpreter nicht | Schritt 8. Falls `.venv` nicht angeboten wird: „Enter interpreter path“ → `.venv\Scripts\python.exe`. |
