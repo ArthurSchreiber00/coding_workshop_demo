@@ -23,18 +23,28 @@ jobs:
       - name: MCP server imports
         run: python -c "import mcp_server.server"
 
-  quickstart-windows:
+  quickstart-commands-windows:
+    # Führt die Befehle aus QUICKSTART.md auf einem echten Windows-Runner aus.
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Run quickstart.ps1 (installs, tests, starts app, checks website, stops app)
+      - name: Schritte 3-7 aus QUICKSTART.md
         shell: pwsh
-        run: .\quickstart.ps1 -NoBrowser -StopAfterCheck
-      - name: Run quickstart.cmd wrapper (check only, app is stopped -> expect exit 1)
-        shell: cmd
         run: |
-          quickstart.cmd -CheckOnly
-          if %ERRORLEVEL% EQU 1 (echo wrapper works && exit /b 0) else (exit /b 1)
+          python -m venv .venv
+          if (-not (Test-Path .venv\Scripts\python.exe)) { throw "venv fehlt" }
+          .venv\Scripts\python.exe -m pip install -r requirements.txt
+          .venv\Scripts\python.exe -m pytest
+          $server = Start-Process -FilePath .venv\Scripts\python.exe -ArgumentList "-m","uvicorn","app.main:app" -PassThru
+          $status = 0
+          foreach ($i in 1..30) {
+            try { $status = (Invoke-WebRequest http://127.0.0.1:8000/api/items -UseBasicParsing).StatusCode; break } catch { Start-Sleep -Seconds 1 }
+          }
+          $count = 0
+          if ($status -eq 200) { $count = ((Invoke-WebRequest http://127.0.0.1:8000/api/items -UseBasicParsing).Content | ConvertFrom-Json | Measure-Object).Count }
+          Stop-Process -Id $server.Id -Force
+          if ($status -ne 200 -or $count -ne 10) { throw "Website-Check fehlgeschlagen: Status $status, $count Geräte" }
+          "Website OK: Status $status, $count Geräte"

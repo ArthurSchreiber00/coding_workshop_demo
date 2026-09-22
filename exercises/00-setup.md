@@ -8,8 +8,7 @@
    cd toolshed
    code .
    ```
-   Schnellweg für Schritt 2–4: `.\quickstart.cmd` (Details in [QUICKSTART.md](../QUICKSTART.md)). Sonst:
-2. Environment und Abhängigkeiten:
+2. Environment und Abhängigkeiten (ausführlich mit Kontrollen: [QUICKSTART.md](../QUICKSTART.md)):
    ```powershell
    py -3 -m venv .venv
    .venv\Scripts\python.exe -m pip install -r requirements.txt

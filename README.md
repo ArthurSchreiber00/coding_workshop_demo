@@ -8,25 +8,19 @@ Die Codebasis ist absichtlich nicht perfekt. Was du findest, gehört vermutlich 
 
 ## Schnellstart (Windows, PowerShell)
 
-Ausführlich mit Prüfschritten und Hilfe bei Problemen: [QUICKSTART.md](QUICKSTART.md). Kurzfassung:
+Schritt für Schritt mit Kontrollen und Hilfe bei Problemen: [QUICKSTART.md](QUICKSTART.md). Kurzfassung:
 
 ```powershell
 git clone <REPO-URL> toolshed
 cd toolshed
-.\quickstart.cmd
-```
-
-Oder von Hand:
-
-```powershell
 py -3 -m venv .venv
 .venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe -m pytest
 .venv\Scripts\python.exe -m uvicorn app.main:app --reload
 ```
 
 - Oberfläche: http://127.0.0.1:8000
 - API-Dokumentation (OpenAPI): http://127.0.0.1:8000/docs
-- Tests: `.venv\Scripts\python.exe -m pytest`
 
 macOS/Linux: `python3 -m venv .venv` und `.venv/bin/python` statt `.venv\Scripts\python.exe`.
 

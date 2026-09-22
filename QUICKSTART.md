@@ -1,69 +1,114 @@
 # Quick Start (Windows)
 
-Repository installieren, starten und prüfen – in fünf Minuten.
+Alle Befehle werden in **PowerShell** eingegeben (Startmenü → „PowerShell“, oder in VS Code: Terminal → Neues Terminal). Nach jedem Schritt steht, woran du erkennst, dass er geklappt hat.
 
-## Voraussetzungen
+Es werden keine Skripte ausgeführt und keine Systemeinstellungen geändert. Das virtuelle Environment wird bewusst nicht „aktiviert“, sondern immer direkt über `.venv\Scripts\python.exe` angesprochen.
 
-- Windows 10/11, **PowerShell** (vorinstalliert)
-- **Python 3.11 oder neuer** (mindestens 3.10) – Test: `py -3 --version`
-- **Git** – Test: `git --version`
-- Internetzugang zu github.com und pypi.org
+## 1. Voraussetzungen prüfen
 
-## Weg A: ein Befehl
+```powershell
+py -3 --version
+git --version
+```
+
+Erwartet: `Python 3.11.x` oder neuer (mindestens 3.10) und `git version 2.x`.
+
+## 2. Repository holen
 
 ```powershell
 git clone <REPO-URL> toolshed
 cd toolshed
-.\quickstart.cmd
 ```
 
-Das Skript sucht Python, legt `.venv` an, installiert die Abhängigkeiten, führt die Tests aus, startet die App in einem eigenen Fenster, wartet bis sie antwortet, prüft die Startseite und öffnet den Browser.
+Erwartet: ein Ordner `toolshed` mit `app`, `tests`, `exercises`, `requirements.txt`.
 
-Erwartete Ausgabe am Ende:
+Optional VS Code öffnen: `code .`
 
-```
-    OK      Website läuft: http://127.0.0.1:8000  (10 Geräte in der API)
-    OK      Startseite rendert (Toolshed / Übersicht)
-```
-
-Optionen: `.\quickstart.cmd -SkipTests` · `-Port 8080` · `-NoBrowser` · `-CheckOnly` (nur prüfen, ob die Website läuft).
-
-## Weg B: von Hand
+## 3. Virtuelles Environment anlegen
 
 ```powershell
-git clone <REPO-URL> toolshed
-cd toolshed
 py -3 -m venv .venv
+```
+
+Kontrolle:
+
+```powershell
+Test-Path .venv\Scripts\python.exe
+```
+
+Erwartet: `True`.
+
+## 4. Abhängigkeiten installieren
+
+```powershell
 .venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+Erwartet: letzte Zeile beginnt mit `Successfully installed` (beim zweiten Mal `Requirement already satisfied`). Dauer: etwa eine Minute.
+
+## 5. Tests ausführen
+
+```powershell
 .venv\Scripts\python.exe -m pytest
+```
+
+Erwartet: `23 passed`.
+
+## 6. App starten
+
+```powershell
 .venv\Scripts\python.exe -m uvicorn app.main:app --reload
 ```
 
-## Prüfen, ob die Website läuft
+Erwartet:
 
-- Browser: http://127.0.0.1:8000 zeigt die Seite **Übersicht** mit 10 Geräten und 5 Personen; http://127.0.0.1:8000/docs zeigt die API-Dokumentation.
-- PowerShell (zweites Fenster):
-  ```powershell
-  Invoke-WebRequest http://127.0.0.1:8000/api/items -UseBasicParsing | Select-Object StatusCode
-  ```
-  Erwartet: `StatusCode 200`.
-- Oder: `.\quickstart.cmd -CheckOnly`
+```
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Application startup complete.
+```
+
+Das Fenster bleibt offen. Die App läuft, solange es offen ist. Beim ersten Start wird `toolshed.db` mit Demodaten angelegt.
+
+## 7. Prüfen, ob die Website läuft
+
+Im Browser:
+
+- http://127.0.0.1:8000 → Seite **Übersicht** mit 10 Geräten und 5 Personen
+- http://127.0.0.1:8000/docs → API-Dokumentation (Swagger UI)
+
+Oder in einem **zweiten** PowerShell-Fenster:
+
+```powershell
+Invoke-WebRequest http://127.0.0.1:8000/api/items -UseBasicParsing | Select-Object StatusCode
+```
+
+Erwartet: `StatusCode 200`.
+
+```powershell
+(Invoke-WebRequest http://127.0.0.1:8000/api/items -UseBasicParsing).Content | ConvertFrom-Json | Measure-Object | Select-Object Count
+```
+
+Erwartet: `Count 10`.
+
+## 8. VS Code auf das Environment zeigen
+
+Befehlspalette (`Strg+Shift+P`) → **Python: Select Interpreter** → `.venv\Scripts\python.exe` wählen. Danach funktionieren Tests und Ausführen aus VS Code heraus.
 
 ## Stoppen und zurücksetzen
 
-- Stoppen: Server-Fenster schließen oder `Strg+C` im Terminal.
-- Datenbank zurücksetzen: App stoppen, `toolshed.db` löschen, App neu starten (Demodaten werden neu angelegt).
+- Stoppen: `Strg+C` im Fenster, in dem die App läuft.
+- Demodaten zurücksetzen: App stoppen, dann `Remove-Item toolshed.db`, dann App neu starten.
 
 ## Wenn es klemmt
 
 | Symptom | Lösung |
 |---|---|
-| `py` wird nicht erkannt | Python von python.org installieren und „Add python.exe to PATH“ anhaken – oder `python` statt `py -3` verwenden. |
+| `py` wird nicht erkannt | `python` statt `py -3` verwenden. Falls auch das fehlt: Python von https://www.python.org/downloads/ installieren, dabei „Add python.exe to PATH“ anhaken, PowerShell neu öffnen. |
 | `python` öffnet den Microsoft Store | Einstellungen → Apps → Erweiterte App-Einstellungen → App-Ausführungsaliase: `python.exe` und `python3.exe` ausschalten. Oder `py -3` verwenden. |
-| „Die Ausführung von Skripts ist auf diesem System deaktiviert“ | `.\quickstart.cmd` statt `.\quickstart.ps1` verwenden (umgeht die Execution Policy nur für diesen Aufruf). Alternativ Weg B. |
-| `pip install` scheitert (Timeout, SSL, 407) | Firmenproxy: vorher `$env:HTTPS_PROXY = "http://proxy:port"` setzen. Interner PyPI-Spiegel: `pip config set global.index-url <URL>`. |
-| Port 8000 belegt | `.\quickstart.cmd -Port 8080` bzw. `--port 8080` an uvicorn anhängen. |
-| VS Code findet den Interpreter nicht | Befehlspalette → **Python: Select Interpreter** → `.venv\Scripts\python.exe`. |
-| Tests rot | Ausgabe lesen; meist fehlende Abhängigkeiten → `pip install -r requirements.txt` wiederholen. |
+| `pip install` scheitert (Timeout, SSL, 407) | Firmenproxy: vorher `$env:HTTPS_PROXY = "http://proxy:port"` setzen und den Befehl wiederholen. Interner PyPI-Spiegel: `.venv\Scripts\python.exe -m pip config set global.index-url <URL>`. |
+| `Address already in use` / Port 8000 belegt | `--port 8080` an den Startbefehl anhängen und in den Übungen `8080` statt `8000` verwenden. |
+| Seite lädt nicht | Läuft die App noch im ersten Fenster? Fehlermeldung dort lesen. Adresse genau `http://127.0.0.1:8000` (nicht https). |
+| Tests rot | Ausgabe lesen. Meist unvollständige Installation → Schritt 4 wiederholen. |
+| VS Code findet den Interpreter nicht | Schritt 8. Falls `.venv` nicht angeboten wird: „Enter interpreter path“ → `.venv\Scripts\python.exe`. |
 
-macOS/Linux: `python3 -m venv .venv`, `.venv/bin/python` statt `.venv\Scripts\python.exe`; das Skript läuft dort mit `pwsh ./quickstart.ps1`.
+macOS/Linux: `python3 -m venv .venv` und `.venv/bin/python` statt `.venv\Scripts\python.exe`.
