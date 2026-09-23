@@ -5,7 +5,7 @@ Bitte **vor** dem Workshop prüfen. Alles muss auf dem Laptop laufen, mit dem ih
 ## Teilnehmende
 
 1. **VS Code** aktuell (mindestens 1.109, besser die neueste Version) mit den Erweiterungen **GitHub Copilot** und **GitHub Copilot Chat**, angemeldet mit dem Firmen-Copilot-Account.
-   Test: Copilot Chat öffnen (`Ctrl+Alt+I`), im Dropdown unten „Agent“ und „Plan“ auswählen können.
+   Test: Copilot Chat öffnen (`Strg+Alt+I`), im Dropdown unten „Agent“ und „Plan“ auswählen können.
 2. **Python 3.11 oder neuer** (mindestens 3.10) mit `pip`. Test in PowerShell: `py -3 --version`
    Ihr müsst ein virtuelles Environment anlegen und diese Pakete installieren können (Versionen stehen in `requirements.txt`): `fastapi`, `uvicorn`, `jinja2`, `python-multipart`, `httpx`, `pytest`, `mcp`.
    Test:

@@ -10,7 +10,7 @@ Die Codebasis ist absichtlich nicht perfekt. Was du findest, gehört vermutlich 
 Schritt für Schritt mit Kontrollen und Hilfe bei Problemen: [QUICKSTART.md](QUICKSTART.md). Kurzfassung:
 
 ```powershell
-git clone <REPO-URL> toolshed
+git clone https://github.com/ArthurSchreiber00/coding_workshop_demo.git toolshed
 cd toolshed
 py -3 -m venv .venv
 .venv\Scripts\python.exe -m pip install -r requirements.txt
@@ -27,7 +27,7 @@ Beim ersten Start wird `toolshed.db` angelegt und mit Demodaten gefüllt (`app/m
 
 ## Übungen
 
-Die Aufgaben für den Workshop stehen in [`exercises/`](exercises/README.md). Voraussetzungen: [`PREREQUISITES.md`](PREREQUISITES.md).
+Die Übungsblätter für den Workshop werden separat bereitgestellt. Voraussetzungen: [`PREREQUISITES.md`](PREREQUISITES.md).
 
 ## Struktur
 
@@ -45,7 +45,6 @@ app/
 tests/               pytest (eigene Test-DB, nie toolshed.db)
 mcp_server/          MCP-Server über die API (Streamable HTTP, Port 8001)
 docs/                Architektur, Konventionen, ADRs
-exercises/           Workshop-Aufgaben
 ```
 
 ## API

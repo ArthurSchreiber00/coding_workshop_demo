@@ -14,11 +14,11 @@ Erwartet: `Python 3.11.x` oder neuer (mindestens 3.10) und `git version 2.x`.
 ## 2. Repository holen
 
 ```powershell
-git clone <REPO-URL> toolshed
+git clone https://github.com/ArthurSchreiber00/coding_workshop_demo.git toolshed
 cd toolshed
 ```
 
-Erwartet: ein Ordner `toolshed` mit `app`, `tests`, `exercises`, `requirements.txt`.
+Erwartet: ein Ordner `toolshed` mit `app`, `tests`, `docs`, `requirements.txt`.
 
 Optional VS Code öffnen: `code .`
 
@@ -50,7 +50,7 @@ Erwartet: letzte Zeile beginnt mit `Successfully installed` (beim zweiten Mal `R
 .venv\Scripts\python.exe -m pytest
 ```
 
-Erwartet: `24 passed`.
+Erwartet: `28 passed`.
 
 ## 6. App starten
 
