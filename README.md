@@ -36,7 +36,7 @@ app/
   main.py            FastAPI-App, Router, Migrationen beim Start
   config.py          Konfiguration
   db.py              SQLite-Verbindung, Migrationen
-  migrations/        NNN_name.sql – werden beim Start ausgeführt
+  migrations/        NNN_name.sql – neue werden beim Start einmalig angewendet
   routers/           HTTP-Schicht: pages.py (HTML), items/members/loans/reports (JSON unter /api)
   repositories/      Datenzugriff (SQL)
   schemas.py         Pydantic-Modelle

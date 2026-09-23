@@ -21,17 +21,39 @@ def connect() -> sqlite3.Connection:
 
 
 def run_migrations() -> list[str]:
-    """Führt alle app/migrations/NNN_*.sql in Reihenfolge aus. Dateien müssen idempotent sein."""
-    applied: list[str] = []
+    """Wendet neue app/migrations/NNN_*.sql in Reihenfolge an, jede genau einmal.
+
+    Bereits angewendete Dateien stehen in der Tabelle schema_migrations. Jede Migration
+    läuft zusammen mit ihrem Protokolleintrag in einer Transaktion: Schlägt sie fehl,
+    bleibt die Datenbank unverändert und die Migration gilt als nicht angewendet.
+    Gibt die Namen der in diesem Aufruf neu angewendeten Migrationen zurück.
+    """
+    newly_applied: list[str] = []
     conn = connect()
     try:
-        for path in sorted(MIGRATIONS_DIR.glob("*.sql")):
-            conn.executescript(path.read_text(encoding="utf-8"))
-            applied.append(path.name)
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS schema_migrations ("
+            " name TEXT PRIMARY KEY,"
+            " applied_at TEXT NOT NULL DEFAULT (datetime('now')))"
+        )
         conn.commit()
+        done = {row["name"] for row in conn.execute("SELECT name FROM schema_migrations")}
+        for path in sorted(MIGRATIONS_DIR.glob("*.sql")):
+            if path.name in done:
+                continue
+            try:
+                # executescript committet vorher offene Transaktionen und steuert selbst keine;
+                # das BEGIN hält Migration und Protokolleintrag in einer Transaktion.
+                conn.executescript("BEGIN;\n" + path.read_text(encoding="utf-8"))
+                conn.execute("INSERT INTO schema_migrations (name) VALUES (?)", (path.name,))
+                conn.commit()
+            except sqlite3.Error as exc:
+                conn.rollback()
+                raise RuntimeError(f"Migration {path.name} fehlgeschlagen: {exc}") from exc
+            newly_applied.append(path.name)
     finally:
         conn.close()
-    return applied
+    return newly_applied
 
 
 def get_conn() -> Iterator[sqlite3.Connection]:

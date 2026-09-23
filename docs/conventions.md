@@ -14,9 +14,10 @@ Unter macOS/Linux entsprechend `.venv/bin/python`.
 ## Datenbank & Migrationen
 
 - SQLite, Datei `toolshed.db` im Projektordner (überschreibbar mit der Umgebungsvariable `TOOLSHED_DB`).
-- Migrationen sind reine SQL-Dateien in `app/migrations/`, Benennung `NNN_kurzname.sql`, werden beim Start in Reihenfolge ausgeführt.
+- Migrationen sind reine SQL-Dateien in `app/migrations/`, Benennung `NNN_kurzname.sql`. Beim Start werden neue Dateien in Reihenfolge angewendet, jede genau einmal; angewendete stehen in der Tabelle `schema_migrations`.
 - **Eine committete Migration wird nie geändert.** Schemaänderung = neue Datei mit der nächsten Nummer.
-- Migrationen müssen idempotent sein (`IF NOT EXISTS`, `INSERT OR IGNORE`).
+- Jede Migration läuft in einer Transaktion. Schlägt sie fehl, bleibt die Datenbank unverändert, und die App startet nicht. Kein eigenes `BEGIN`/`COMMIT` in Migrationsdateien.
+- Neue Spalten per `ALTER TABLE … ADD COLUMN` in einer neuen Migration.
 
 ## SQL
 
