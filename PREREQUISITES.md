@@ -14,4 +14,4 @@ Bitte **vor** dem Workshop prüfen. Alles muss auf dem Laptop laufen, mit dem ih
    C:\temp\venv-test\Scripts\python.exe -m pip install fastapi uvicorn jinja2 python-multipart httpx pytest mcp
    ```
 3. **Git für Windows**. Test: `git --version`. Zugriff auf github.com zum Klonen des Übungs-Repos.
-4. Netzwerk: lokale Ports 8000 und 8001 dürfen von VS Code erreicht werden; ausgehend HTTPS zu `mcp.deepwiki.com` und `learn.microsoft.com` (für den MCP-Teil).
+4. Netzwerk: lokale Ports 8000 und 8001 dürfen von VS Code erreicht werden; ausgehend HTTPS zu `mcp.deepwiki.com` (für den MCP-Teil).
