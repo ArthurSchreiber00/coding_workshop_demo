@@ -49,3 +49,10 @@ def test_members_page(client):
     resp = client.get("/members")
     assert resp.status_code == 200
     assert "Aylin Kaya" in resp.text
+
+
+def test_members_page_search(client):
+    resp = client.get("/members", params={"q": "Aylin"})
+    assert resp.status_code == 200
+    assert "Aylin Kaya" in resp.text
+    assert "Dana Berger" not in resp.text

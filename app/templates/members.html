@@ -2,6 +2,12 @@
 {% block title %}Personen – {{ app_name }}{% endblock %}
 {% block content %}
 <h1>Personen</h1>
+
+<form class="search" method="get" action="/members">
+  <input type="text" name="q" value="{{ q }}" placeholder="Name oder E-Mail…">
+  <button type="submit">🔍</button>
+  {% if q %}<a href="/members" class="link-muted">zurücksetzen</a>{% endif %}
+</form>
 <table class="table">
   <tr>
     <td>Name</td><td>Team</td><td>E-Mail</td><td>Offene Ausleihen</td><td>Rolle</td>

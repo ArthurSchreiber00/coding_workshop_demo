@@ -1,7 +1,7 @@
 """JSON-API für Personen."""
 import sqlite3
 
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, Query, Response
 
 from app.db import get_conn
 from app.errors import ApiError
@@ -14,7 +14,12 @@ router = APIRouter(prefix="/api/members", tags=["members"])
 
 
 @router.get("", response_model=list[Member])
-def list_members(conn: sqlite3.Connection = Depends(get_conn)):
+def list_members(
+    q: str | None = Query(default=None, description="Suche in Name, E-Mail und Team"),
+    conn: sqlite3.Connection = Depends(get_conn),
+):
+    if q:
+        return repo.search_members(conn, q)
     return repo.list_members(conn)
 
 

@@ -150,8 +150,12 @@ def return_loan_form(loan_id: int, conn: sqlite3.Connection = Depends(get_conn))
 
 
 @router.get("/members", response_class=HTMLResponse)
-def members_page(request: Request, conn: sqlite3.Connection = Depends(get_conn)):
-    members = members_repo.list_members(conn)
+def members_page(request: Request, q: str = "", conn: sqlite3.Connection = Depends(get_conn)):
+    if q:
+        rows = conn.execute(f"SELECT * FROM members WHERE name LIKE '%{q}%' OR email LIKE '%{q}%' ORDER BY name")
+        members = [dict(r) for r in rows]
+    else:
+        members = members_repo.list_members(conn)
     for m in members:
         m["open_loans"] = loans_repo.count_open_loans(conn, m["id"])
-    return _render(request, conn, "members.html", members=members)
+    return _render(request, conn, "members.html", members=members, q=q)
