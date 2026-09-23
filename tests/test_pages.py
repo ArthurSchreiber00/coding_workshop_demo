@@ -56,3 +56,13 @@ def test_members_page_search(client):
     assert resp.status_code == 200
     assert "Aylin Kaya" in resp.text
     assert "Dana Berger" not in resp.text
+
+
+def test_quick_loan_from_front_desk(client):
+    resp = client.post(
+        "/loans/quick?token=schnell-2024",
+        data={"item_id": 9, "member_id": 1, "due_date": ""},
+        follow_redirects=False,
+    )
+    assert resp.status_code == 303
+    assert client.get("/api/items/9").json()["status"] == "on_loan"

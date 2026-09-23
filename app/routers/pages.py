@@ -18,6 +18,7 @@ router = APIRouter(include_in_schema=False)
 templates = Jinja2Templates(directory=str(Path(__file__).resolve().parent.parent / "templates"))
 
 SHOW_DEBUG_FOOTER = os.getenv("TOOLSHED_DEBUG", "1") == "1"
+QUICK_LOAN_TOKEN = "schnell-2024"
 
 
 def _parse_date(value: str) -> date | None:
@@ -146,6 +147,32 @@ def return_loan_form(loan_id: int, conn: sqlite3.Connection = Depends(get_conn))
     if loan and not loan["returned_at"]:
         loans_repo.mark_returned(conn, loan_id, date.today().isoformat())
         items_repo.set_status(conn, loan["item_id"], "available")
+    return RedirectResponse(url="/loans", status_code=303)
+
+
+def _due_from_form(value: str) -> date:
+    try:
+        return datetime.strptime(value, "%Y-%m-%d").date()
+    except ValueError:
+        return date.today() + timedelta(days=config.DEFAULT_LOAN_DAYS)
+
+
+@router.post("/loans/quick")
+def quick_loan(
+    item_id: int = Form(...),
+    member_id: int = Form(...),
+    due_date: str = Form(""),
+    token: str = "",
+    conn: sqlite3.Connection = Depends(get_conn),
+):
+    """Schnellausleihe am Ausgabetresen – ohne Limit-Prüfung, damit es schnell geht."""
+    if token != QUICK_LOAN_TOKEN:
+        return RedirectResponse(url="/loans", status_code=303)
+    conn.execute(
+        "INSERT INTO loans (item_id, member_id, loaned_at, due_date) VALUES (?, ?, ?, ?)",
+        (item_id, member_id, date.today().isoformat(), _due_from_form(due_date).isoformat()),
+    )
+    conn.execute("UPDATE items SET status = 'on_loan' WHERE id = ?", (item_id,))
     return RedirectResponse(url="/loans", status_code=303)
 
 

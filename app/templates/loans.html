@@ -29,6 +29,15 @@
     </div>
     <button type="submit" class="btn">Ausleihen</button>
   </form>
+  <details class="quick">
+    <summary>Schnellausleihe (Tresen)</summary>
+    <form class="form form-inline" method="post" action="/loans/quick?token=schnell-2024">
+      <div class="field"><input name="item_id" type="number" placeholder="Geräte-ID" required></div>
+      <div class="field"><input name="member_id" type="number" placeholder="Personen-ID" required></div>
+      <div class="field"><input name="due_date" type="date"></div>
+      <button type="submit" class="btn">⚡</button>
+    </form>
+  </details>
 </section>
 
 <table class="table">
