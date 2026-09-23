@@ -10,10 +10,11 @@
 </form>
 <table class="table">
   <tr>
-    <td>Name</td><td>Team</td><td>E-Mail</td><td>Offene Ausleihen</td><td>Rolle</td>
+    <td></td><td>Name</td><td>Team</td><td>E-Mail</td><td>Offene Ausleihen</td><td>Rolle</td>
   </tr>
   {% for m in members %}
-  <tr>
+  <tr{% if m.open_loans >= 3 %} class="at-limit"{% endif %}>
+    <td><img src="/static/avatar.svg" width="24" height="24" class="avatar"></td>
     <td>{{ m.name }}</td>
     <td>{{ m.team }}</td>
     <td><a href="mailto:{{ m.email }}">{{ m.email }}</a></td>
